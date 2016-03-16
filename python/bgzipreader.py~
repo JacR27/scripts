@@ -1,0 +1,45 @@
+import struct as st
+import argparse
+
+
+def getoptions():
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument('-i', required=True, action='store', dest='filename',
+                            help='gzip file')
+    return arg_parser.parse_args()
+
+
+def main():
+    args = getoptions()
+    read_gzip_records(args.filename)
+
+
+def read_gzip_records(filename):
+    
+    with open(filename) as fh:
+        for i in range(1000):
+            read_gzip_record(fh,i)
+
+def read_gzip_record(fh,number):
+    ID1 = st.unpack("B", fh.read(1))[0]
+    ID2 = st.unpack("B", fh.read(1))[0]
+    CM = st.unpack("B", fh.read(1))[0]
+    FLG = st.unpack("B", fh.read(1))[0]
+    MTIME = st.unpack("<I", fh.read(4))[0]
+    XFL = st.unpack("B", fh.read(1))[0]
+    OS = st.unpack("B", fh.read(1))[0]
+    XLEN = st.unpack("<H", fh.read(2))[0]
+    SI1 = st.unpack("B", fh.read(1))[0]
+    SI2 = st.unpack("B", fh.read(1))[0]
+    SLEN = st.unpack("<H", fh.read(2))[0]
+    BSIZE = st.unpack("<H", fh.read(2))[0]
+    CDATA = st.unpack("{}B".format(BSIZE-XLEN-19), fh.read(BSIZE-XLEN-19))
+    CRC32 = st.unpack("<I", fh.read(4))[0]
+    ISIZE = st.unpack("<I", fh.read(4))[0]
+    print(number, ID1,ID2,CM,FLG,MTIME,XFL,OS,XLEN,SI1,SI2,SLEN,BSIZE,CRC32,ISIZE)
+        
+        
+        
+
+if __name__=='__main__':
+    main()

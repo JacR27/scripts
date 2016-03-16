@@ -1,0 +1,10 @@
+import sys
+
+def main():
+    seq = ""
+    for i in sys.stdin:
+        if not i.startswith(">"):
+            seq += i.strip()
+            
+    print(seq[154575326:154575327+160])
+            

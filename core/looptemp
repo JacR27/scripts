@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for x
+do
+    	cd S4${x}R2
+	collect.sh S4${x}R2
+	cd ..
+	cd S4${x}R3
+	collect.sh S4${x}R3
+	cd ..
+    done
+done
+
